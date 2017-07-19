@@ -1,0 +1,16 @@
+--dirct=0
+--filect=1
+local list = {
+	appdir = "pdk",
+	appname = "pdk",
+	appver = "1.0",
+	ver = "1.0.0",
+	version = 100,
+	dirs = {
+	},
+	files = {
+		{"V200-V100.zip","232e07d9d8fc97526df317de48471167",1624},
+	},
+}
+
+return list

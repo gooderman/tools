@@ -100,7 +100,7 @@ def stringlize(dirlist,filelist):
 		nm = tp[0]
 		md = tp[1]
 		sz = tp[2]
-		item='\t\t{"%s","%s",%d},\n'%(nm,md,sz)
+		item='\t\t{"%s","%s",%d,%d},\n'%(nm,md,sz,resvercode)
 		buf = buf+item
 	buf = buf+"\t},\n" 
 	buf = buf+"}\n\n" 
@@ -108,17 +108,17 @@ def stringlize(dirlist,filelist):
 	buf=re.sub(r'\\',r'/',buf)
 	return buf
 	
-def list_dir(srcdir):
+def list_dir(srcdir,version):
 	global appdir
 	global appname
 	global appver
 	global resver
 	global resvercode
-	appdir="pdk"
-	appname="pdk"
+	appdir="ddz"
+	appname="ddz"
 	appver="1.0"
-	resver="1.0.0"
-	resvercode=100
+	resver=str(version)
+	resvercode=version
 	os.system("echo off")
 	filter_file(srcdir,['.db','.svn','.git','.DS_Store'])	
 	dirlist,filelist = list_file(srcdir)

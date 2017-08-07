@@ -36,6 +36,21 @@ def cmp_file_md5(src,dst):
 		return True
 	return False
 
+def is_empty(dstdir):
+	for parent,dirnames,filenames in os.walk(dstdir):
+		# print "is_empty__++:",dstdir,len(filenames)
+		if len(filenames)>0 :
+			return False
+		for dirname in dirnames:
+			if False==is_empty(os.path.join(parent,dirname)):
+				return False		
+	return True
+
+def rm_dir(dir):
+    if os.path.isdir(dir):
+		print "remove ",dir
+		os.system("rm -r "+dir)
+
 def cmp_file(srcdir,dstdir):
 	prefix = srcdir
 	plen = len(srcdir)
@@ -52,11 +67,23 @@ def cmp_file(srcdir,dstdir):
 				rmfile=rmfile+1
 	print("srcfile: ",allfile)
 	print("samfile: ",rmfile)
+	#############################
+	allemptydir=[]
+	for parent,dirnames,filenames in os.walk(dstdir):	
+		for dirname in dirnames:
+			ppp=os.path.join(parent,dirname)
+			flag = is_empty(ppp)
+			if flag :
+				allemptydir.append(ppp)
+	print "empty dir :",len(allemptydir)
+	for rmdir in allemptydir:
+		rm_dir(rmdir)
+	#############################
 	allfile=0
 	for parent,dirnames,filenames in os.walk(dstdir):
 		for filename in filenames:
 			allfile=allfile+1
-	print("outfile: ",allfile)	
+	print("outfile: ",allfile)
 	return allfile
 
 def filter_file(srcdir,endlist):
@@ -67,11 +94,6 @@ def filter_file(srcdir,endlist):
 				if re.match(".+"+end+"$",srcpath):
 					os.remove(srcpath)
 
-def rm_dir(dir):
-	if os.path.isdir(dir):
-		print "remove ",dir
-		os.system("rm -r "+dir)
-	
 def compare(srcdir,dstdir,outdir):
 	os.system("echo off")
 	rm_dir(outdir)

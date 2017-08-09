@@ -80,6 +80,38 @@ def rm_file(f):
 	if os.path.isfile(f):
 		os.remove(f)
 
+def stringlize_json(dirlist,filelist):
+	# buf = "--dirct=" + str(len(dirlist)) + "\n"
+	# buf = buf + "--filect=" + str(len(filelist)) + "\n"
+	buf = ""
+	buf = buf + "{\n" 
+	buf = buf + "\t\"appdir\":\"" + (appdir) + "\",\n"
+	buf = buf + "\t\"appname\":\"" + (appname) + "\",\n"
+	buf = buf + "\t\"appver\":\"" + (appver) + "\",\n" 
+	buf = buf + "\t\"ver\":\"" + (resver) + "\",\n" 
+	buf = buf + "\t\"version\":" + str(resvercode) + ",\n" 
+	buf = buf + "\t\"dirs\":[\n"
+	delim = ""
+	for dname in dirlist:
+		item='\t\t"%s"'%(dname)
+		buf=buf+delim+item
+		delim=",\n"
+	buf = buf+"\n\t],\n"
+
+	buf = buf+"\t\"files\":[\n"
+	delim = ""
+	for tp in filelist:
+		nm = tp[0]
+		md = tp[1]
+		sz = tp[2]
+		item='\t\t["%s","%s",%d,%d]'%(nm,md,sz,resvercode)
+		buf = buf+delim+item
+		delim=",\n"
+	buf = buf+"\n\t]\n"
+	buf = buf+"}\n\n"
+	buf=re.sub(r'\\',r'/',buf)
+	return buf
+
 def stringlize(dirlist,filelist):
 	buf = "--dirct=" + str(len(dirlist)) + "\n"
 	buf = buf + "--filect=" + str(len(filelist)) + "\n"
@@ -107,7 +139,7 @@ def stringlize(dirlist,filelist):
 	buf = buf+"return list"
 	buf=re.sub(r'\\',r'/',buf)
 	return buf
-	
+
 def list_dir(srcdir,version):
 	global appdir
 	global appname
@@ -122,7 +154,8 @@ def list_dir(srcdir,version):
 	os.system("echo off")
 	filter_file(srcdir,['.db','.svn','.git','.DS_Store'])	
 	dirlist,filelist = list_file(srcdir)
-	buff = stringlize(dirlist,filelist)
+	# buff = stringlize(dirlist,filelist)
+	buff = stringlize_json(dirlist,filelist)
 	print buff
 	# outfile = os.getcwd()+"/"+"flist.txt"
 	outfile = srcdir+"/"+"flist.data"

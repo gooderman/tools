@@ -59,14 +59,15 @@ def zip_file_dir(path, outfile):
 	return outlist
 
 def run():
-	if len(sys.argv)<4:
-		print "please input dirPreVer,dirCurrVer,version"
+	if len(sys.argv)<5:
+		print "please input dirPreVer,dirCurrVer,mainver,resver"
 		return
 	srcdir = os.path.join(os.getcwd(),sys.argv[1])
 	dstdir = os.path.join(os.getcwd(),sys.argv[2])
 	outdir = os.path.join(os.getcwd(),sys.argv[2]+"-"+sys.argv[1])
 	outzip = sys.argv[2]+"-"+sys.argv[1] + '.zip'
-	curver = int(sys.argv[3])
+	mainver = int(sys.argv[3])
+	curver = int(sys.argv[4])
 	# compare return diffdir
 	diffdir = compare(srcdir,dstdir,outdir)
 	# crypto
@@ -77,15 +78,20 @@ def run():
 	copy_dir(outdir,outdir+"-backup")
 	# zip
 	# os.system("7z a -tzip -r -bb0 " + outzip + ' ' + diffdir)
-	outlist = zip_file_dir(diffdir,outzip)
+	empty = False
+	for dirpath, dirs, files in os.walk(diffdir):
+		if len(files)==0 and len(dirs)==0 :
+			empty = True
+	outlist=[]
+	if not empty:
+		outlist = zip_file_dir(diffdir,outzip)
 	os.system("rm -r " + diffdir+'/*')
 	for f in outlist:
 		os.system("cp -f " + f +' ' + outdir)
 		os.system("rm " + f)
 	# listinfo
-	list_dir(diffdir,curver)
+	list_dir(diffdir,mainver,curver)
 	
-
 run()
 #py cmp.py A B
 #'''

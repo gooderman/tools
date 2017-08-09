@@ -88,8 +88,8 @@ def stringlize_json(dirlist,filelist):
 	buf = buf + "\t\"appdir\":\"" + (appdir) + "\",\n"
 	buf = buf + "\t\"appname\":\"" + (appname) + "\",\n"
 	buf = buf + "\t\"appver\":\"" + (appver) + "\",\n" 
-	buf = buf + "\t\"ver\":\"" + (resver) + "\",\n" 
-	buf = buf + "\t\"version\":" + str(resvercode) + ",\n" 
+	buf = buf + "\t\"mainver\":" + str(mainver) + ",\n" 
+	buf = buf + "\t\"version\":" + str(version) + ",\n" 
 	buf = buf + "\t\"dirs\":[\n"
 	delim = ""
 	for dname in dirlist:
@@ -104,7 +104,7 @@ def stringlize_json(dirlist,filelist):
 		nm = tp[0]
 		md = tp[1]
 		sz = tp[2]
-		item='\t\t["%s","%s",%d,%d]'%(nm,md,sz,resvercode)
+		item='\t\t["%s","%s",%d,%d]'%(nm,md,sz,version)
 		buf = buf+delim+item
 		delim=",\n"
 	buf = buf+"\n\t]\n"
@@ -119,8 +119,8 @@ def stringlize(dirlist,filelist):
 	buf = buf + "\tappdir = \"" + (appdir) + "\",\n"
 	buf = buf + "\tappname = \"" + (appname) + "\",\n"
 	buf = buf + "\tappver = \"" + (appver) + "\",\n" 
-	buf = buf + "\tver = \"" + (resver) + "\",\n" 
-	buf = buf + "\tversion = " + str(resvercode) + ",\n" 
+	buf = buf + "\tmainver = " + str(mainver) + "\",\n" 
+	buf = buf + "\tversion = " + str(version) + ",\n" 
 	buf = buf + "\tdirs = {\n"
 	for dname in dirlist:
 		item='\t\t"%s",\n'%(dname)
@@ -132,7 +132,7 @@ def stringlize(dirlist,filelist):
 		nm = tp[0]
 		md = tp[1]
 		sz = tp[2]
-		item='\t\t{"%s","%s",%d,%d},\n'%(nm,md,sz,resvercode)
+		item='\t\t{"%s","%s",%d,%d},\n'%(nm,md,sz,version)
 		buf = buf+item
 	buf = buf+"\t},\n" 
 	buf = buf+"}\n\n" 
@@ -140,17 +140,17 @@ def stringlize(dirlist,filelist):
 	buf=re.sub(r'\\',r'/',buf)
 	return buf
 
-def list_dir(srcdir,version):
+def list_dir(srcdir,__mainver,__version):
 	global appdir
 	global appname
 	global appver
-	global resver
-	global resvercode
+	global mainver
+	global version
 	appdir="ddz"
 	appname="ddz"
 	appver="1.0"
-	resver=str(version)
-	resvercode=version
+	mainver = __mainver
+	version = __version
 	os.system("echo off")
 	filter_file(srcdir,['.db','.svn','.git','.DS_Store'])	
 	dirlist,filelist = list_file(srcdir)

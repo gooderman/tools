@@ -400,32 +400,36 @@ static int deencypt_file_png(const char*name,const char*shorname)
     return 1;
 }
 
-//argv[0]:folderPath argv[1]:fileName argv[2]:isEncyp
+//argv[1]:folderPath argv[2]:fileName argv[3]:isEncyp argv[4]:isEncyppng
 int main(int argc, const char * argv[]) {
-//    insert code here...
-//    std::cout << "Hello, World!\n";
+    //    insert code here...
+    //    std::cout << "Hello, World!\n";
 #if 1
-    if(argc < 3)return 0;
+    if(argc < 4)return 0;
     
     bool isEncyp = atoi(argv[3]);
     std::string folderPath = argv[1];
     std::string fileName = argv[2];
     std::string filePath = folderPath;
-				filePath += "/";
-				filePath += fileName;
+    filePath += "/";
+    filePath += fileName;
+    bool isEnpng = argc > 4;
     
 #else
     bool isEncyp = false;
     std::string folderPath = "/Users/jeep/cocos/tools/crypto";
     std::string fileName = "aa.png";
     std::string filePath = folderPath;
-				filePath += "/";
-				filePath += fileName;    
+    filePath += "/";
+    filePath += fileName;
 #endif
-				
+    
     if (isEncyp)
     {
-        encypt_file_png(filePath.c_str(),fileName.c_str());
+        if(isEnpng)
+        {
+            encypt_file_png(filePath.c_str(),fileName.c_str());
+        }
         encypt_file(filePath.c_str(),fileName.c_str());
         
         //encypt_file_png("E:/SVN/ET/code/client/≥ˆ∞¸π§æﬂ/res/PLOT/talk_hero1002.png","talk_hero1002.png");

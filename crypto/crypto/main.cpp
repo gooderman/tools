@@ -418,7 +418,7 @@ int main(int argc, const char * argv[]) {
 //    insert code here...
 //    std::cout << "Hello, World!\n";
 #if 1
-    if(argc < 3)return 0;
+    if(argc < 4)return 0;
     
     bool isEncyp = atoi(argv[3]);
     std::string folderPath = argv[1];
